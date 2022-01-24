@@ -24,5 +24,21 @@ public class Node {
 	void addAdjNode(Node to, int weight) {
 		adjList.append(new Edge(this, to, weight));
 	}
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+		if (object instanceof Node) {
+			Node node = (Node)object;
+			return (this.id == node.id);
+		}
+		return false;
+	}
+	@Override
+	public int hashCode() {
+		//TODO
+		return this.id;
+	}
 }
 
