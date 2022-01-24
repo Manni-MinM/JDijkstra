@@ -27,12 +27,14 @@ public class Graph {
 	public void newNode(int id) {
 		Node newNode = new Node(id);
 		this.nodeMap.put(id, newNode);
+		this.nodeCount += 1;
 	}
 	public void newEdge(int from, int to, int weight) {
 		Node fromNode = nodeMap.get(from);
 		Node toNode = nodeMap.get(to);
 		fromNode.addAdjNode(toNode, weight);
 		toNode.addAdjNode(fromNode, weight);
+		this.edgeCount += 1;
 	}
 	public List<Node> getNodeList() {
 		int tag = 0;
