@@ -22,7 +22,7 @@ public class List<T> {
 	// Methods
 	public void append(T data) {
 		ListNode newListNode = new ListNode(data);
-		if ( head == null ) {
+		if (head == null) {
 			this.head = newListNode;
 			this.tail = newListNode;
 		} else {
@@ -40,6 +40,16 @@ public class List<T> {
 			currentNode = currentNode.getNext();
 		}
 		return currentNode.getData();
+	}
+	public void setByIndex(int index, T data) {
+		if (index >= this.size) {
+			return;
+		}
+		ListNode<T> currentNode = this.tail;
+		for (int i = 0; i < index; i += 1) {
+			currentNode = currentNode.getNext();
+		}
+		currentNode.setData(data);
 	}
 }
 

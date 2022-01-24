@@ -12,6 +12,9 @@ public class ListNode<T> {
 		this.next = null;
 	}
 	// Setters
+	void setData(T data) {
+		this.data = data;
+	}
 	void setNext(ListNode<T> next) {
 		this.next = next;
 	}
