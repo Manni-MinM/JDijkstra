@@ -34,14 +34,35 @@ public class Graph {
 		fromNode.addAdjNode(toNode, weight);
 		toNode.addAdjNode(fromNode, weight);
 	}
+	public List<Node> getNodeList() {
+		int tag = 0;
+		while (this.nodeMap.get(tag) == null) {
+			tag += 1;
+		}
+		Node targetNode = this.nodeMap.get(tag);
+		Map<Integer, Boolean> mark = new Map<Integer, Boolean>();
+		List<Node> list = new List<Node>();
+		dfs(targetNode, mark, list);
+		return list;
+	}
+	public void dfs(Node node, Map<Integer, Boolean> mark, List<Node> list) {
+		list.append(node);
+		mark.put(node.getId(), true);
+		List<Edge> adjList = node.getAdjList();
+		for (int it = 0; it < adjList.getSize(); it += 1) {
+			Node adjNode = adjList.getByIndex(it).getTo();
+			if (mark.get(adjNode.getId()) == null) {
+				dfs(adjNode, mark, list);
+			}
+		}
+	}
 	@Override
 	public String toString() {
 		String ret = "GRAPH\n";
-		for (int it = 0; it < this.nodeMap.getCapacity(); it += 1) {
-			Node node = nodeMap.get(it);
-			if (node != null) {
-				ret += node.toString();
-			}
+		List<Node> list = this.getNodeList();
+		for (int it = 0; it < list.getSize(); it += 1) {
+			Node node = list.getByIndex(it);
+			ret += node.toString();
 		}
 		return ret;
 	}
