@@ -23,5 +23,11 @@ public class Edge {
 	public int getWeight() {
 		return this.weight;
 	}
+	// Methods
+	@Override
+	public String toString() {
+		String ret = "EDGE\n" + this.to.getId() + ", " + this.weight + "\n";
+		return ret;
+	}
 }
 

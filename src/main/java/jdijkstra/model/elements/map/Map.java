@@ -18,6 +18,9 @@ public class Map<K, V> {
 	public int getSize() {
 		return this.size;	
 	}
+	public int getCapacity() {
+		return this.capacity;
+	}
 	// Methods
 	private void initiateBuckets() {
 		this.size = 0;

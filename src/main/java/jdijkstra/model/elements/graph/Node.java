@@ -37,8 +37,16 @@ public class Node {
 	}
 	@Override
 	public int hashCode() {
-		//TODO
 		return this.id;
+	}
+	@Override
+	public String toString() {
+		String adjString = "";
+		for (int it = 0; it < this.adjList.getSize(); it += 1) {
+			adjString += adjList.getByIndex(it).toString();
+		}
+		String ret = "NODE\nid: " + this.id + "\nadj:\n" + adjString;
+		return ret;
 	}
 }
 
