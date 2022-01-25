@@ -4,6 +4,7 @@ package jdijkstra.controller;
 
 import java.util.Scanner;
 
+import jdijkstra.model.elements.map.*;
 import jdijkstra.model.elements.list.*;
 import jdijkstra.model.elements.graph.*;
 
@@ -24,6 +25,8 @@ public class MainController {
 				this.runInput();
 			} else if(command.equals("test")) {
 				this.runTest();
+			} else if(command.equals("dijkstra")) {
+				this.runDijkstra();
 			} else if(command.equals("exit")) {
 				break;
 			} else {
@@ -51,6 +54,13 @@ public class MainController {
 			System.out.print(nodeList.getByIndex(it).getId() + " ");
 		}
 		System.out.println();
+	}
+	public void runDijkstra() {
+		// TODO: fix source and run for all then hash and save
+		List<Pair<Integer, Integer>> list = graph.dijkstra(graph.getNodeList().getByIndex(0));
+		for (int it = 0; it < list.getSize(); it += 1) {
+			System.out.println(list.getByIndex(it).getKey() + ": " + list.getByIndex(it).getValue());
+		}
 	}
 }
 

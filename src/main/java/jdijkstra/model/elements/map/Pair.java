@@ -12,10 +12,10 @@ public class Pair<K, V> {
 		this.value = value;
 	}
 	// Getters
-	K getKey() {
+	public K getKey() {
 		return this.key;
 	}
-	V getValue() {
+	public V getValue() {
 		return this.value;
 	}
 	// Setters

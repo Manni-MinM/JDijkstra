@@ -2,6 +2,9 @@
 
 package jdijkstra.model.elements.graph;
 
+import java.util.PriorityQueue;
+
+import jdijkstra.model.elements.*;
 import jdijkstra.model.elements.map.*;
 import jdijkstra.model.elements.list.*;
 
@@ -24,6 +27,13 @@ public class Graph {
 		return this.edgeCount;
 	}
 	// Methods
+	private Node findStartNode() {
+		int tag = 0;
+		while (this.nodeMap.get(tag) == null) {
+			tag += 1;
+		}
+		return this.nodeMap.get(tag);
+	}
 	public void newNode(int id) {
 		Node newNode = new Node(id);
 		this.nodeMap.put(id, newNode);
@@ -37,11 +47,7 @@ public class Graph {
 		this.edgeCount += 1;
 	}
 	public List<Node> getNodeList() {
-		int tag = 0;
-		while (this.nodeMap.get(tag) == null) {
-			tag += 1;
-		}
-		Node targetNode = this.nodeMap.get(tag);
+		Node targetNode = findStartNode();
 		Map<Integer, Boolean> mark = new Map<Integer, Boolean>();
 		List<Node> list = new List<Node>();
 		dfs(targetNode, mark, list);
@@ -57,6 +63,39 @@ public class Graph {
 				dfs(adjNode, mark, list);
 			}
 		}
+	}
+	public List<Pair<Integer, Integer>> dijkstra(Node source) {
+		int INF = 1000000007;
+		Map<Integer, Integer> dist = new Map<Integer, Integer>();
+		List<Node> nodeList = getNodeList();
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			dist.put(nodeList.getByIndex(it).getId(), INF);
+		}
+		dist.put(source.getId(), 0);
+		PriorityQueue<IntegerPair> queue = new PriorityQueue<IntegerPair>();
+		queue.add(new IntegerPair(dist.get(source.getId()), source));
+		while (queue.size() > 0) {
+			IntegerPair lightest = queue.remove();
+			Node node = lightest.getNode();
+			List<Edge> list = node.getAdjList();
+			for (int it = 0; it < list.getSize(); it += 1) {
+				Edge edge = list.getByIndex(it);
+				int v = edge.getFrom().getId();
+				int u = edge.getTo().getId();
+				int w = edge.getWeight();
+				if (dist.get(u) > dist.get(v) + w) {
+					queue.remove(new IntegerPair(dist.get(u), edge.getTo()));
+					dist.put(u, dist.get(v) + w);
+					queue.add(new IntegerPair(dist.get(u), edge.getTo()));
+				}
+			}
+		}
+		List<Pair<Integer, Integer>> list = new List<Pair<Integer, Integer>>();
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			int v = nodeList.getByIndex(it).getId();
+			list.append(new Pair<Integer, Integer>(v, dist.get(v)));
+		}
+		return list;
 	}
 	@Override
 	public String toString() {
