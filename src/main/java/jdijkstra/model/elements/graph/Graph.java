@@ -64,8 +64,19 @@ public class Graph {
 			}
 		}
 	}
-	public List<Pair<Integer, Integer>> dijkstra(Node source) {
-		int INF = 1000000007;
+	public void calcDist() {
+		List<Node> nodeList = getNodeList();
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node currentNode = nodeList.getByIndex(it);
+			List<Pair<Node, Integer>> distList = dijkstra(currentNode);
+			for (int jt = 0; jt < distList.getSize(); jt += 1) {
+				Pair<Node, Integer> pair = distList.getByIndex(jt);
+				currentNode.getDistMap().put(pair.getKey(), pair.getValue());
+			}
+		}
+	}
+	public List<Pair<Node, Integer>> dijkstra(Node source) {
+		int INF = Integer.MAX_VALUE;
 		Map<Integer, Integer> dist = new Map<Integer, Integer>();
 		List<Node> nodeList = getNodeList();
 		for (int it = 0; it < nodeList.getSize(); it += 1) {
@@ -90,10 +101,10 @@ public class Graph {
 				}
 			}
 		}
-		List<Pair<Integer, Integer>> list = new List<Pair<Integer, Integer>>();
+		List<Pair<Node, Integer>> list = new List<Pair<Node, Integer>>();
 		for (int it = 0; it < nodeList.getSize(); it += 1) {
-			int v = nodeList.getByIndex(it).getId();
-			list.append(new Pair<Integer, Integer>(v, dist.get(v)));
+			Node currentNode = nodeList.getByIndex(it);
+			list.append(new Pair<Node, Integer>(currentNode, dist.get(currentNode.getId())));
 		}
 		return list;
 	}

@@ -2,16 +2,19 @@
 
 package jdijkstra.model.elements.graph;
 
+import jdijkstra.model.elements.map.*;
 import jdijkstra.model.elements.list.*;
 
 public class Node {
 	// Fields
 	private int id;
 	private List<Edge> adjList;
+	private Map<Node, Integer> distMap;
 	// Constructor
 	public Node(int id) {
 		this.id = id;
 		this.adjList = new List<Edge>();
+		this.distMap = new Map<Node, Integer>();
 	}	
 	// Getters
 	public int getId() {
@@ -19,6 +22,9 @@ public class Node {
 	}
 	public List<Edge> getAdjList() {
 		return this.adjList;
+	}
+	public Map<Node, Integer> getDistMap() {
+		return this.distMap;
 	}
 	// Methods
 	void addAdjNode(Node to, int weight) {

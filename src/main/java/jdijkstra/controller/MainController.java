@@ -56,10 +56,17 @@ public class MainController {
 		System.out.println();
 	}
 	public void runDijkstra() {
-		// TODO: fix source and run for all then hash and save
-		List<Pair<Integer, Integer>> list = graph.dijkstra(graph.getNodeList().getByIndex(0));
-		for (int it = 0; it < list.getSize(); it += 1) {
-			System.out.println(list.getByIndex(it).getKey() + ": " + list.getByIndex(it).getValue());
+		graph.calcDist();
+		List<Node> nodeList = graph.getNodeList();
+		for (int it = 0; it < graph.getNodeCount(); it += 1) {
+			Node currentNode = nodeList.getByIndex(it);
+			Map <Node, Integer> map = currentNode.getDistMap();
+			System.out.println(currentNode.getId() + ": ");
+			for (int jt = 0; jt < graph.getNodeCount(); jt += 1) {
+				Node targetNode = nodeList.getByIndex(jt);
+				System.out.print(targetNode.getId() + ", " + map.get(targetNode) + "\t");
+			}
+			System.out.println();
 		}
 	}
 }
