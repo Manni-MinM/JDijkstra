@@ -20,21 +20,26 @@ public class MainController {
 	// Methods
 	public void mainLoop() {
 		while(true) {
-			String command = scanner.nextLine();
-			if (command.equals("input")) {
-				this.runInput();
-			} else if(command.equals("test")) {
-				this.runTest();
-			} else if(command.equals("dijkstra")) {
-				this.runDijkstra();
-			} else if(command.equals("join")) {
-				this.runJoin();
-			} else if(command.equals("left")) {
-				this.runLeft();
-			} else if(command.equals("exit")) {
-				break;
-			} else {
-				System.out.println("Unknown Command!");
+			try {
+				System.out.print("\u001B[33m" + "$: " + "\u001B[0m");
+				String command = scanner.nextLine();
+				if (command.equals("input")) {
+					this.runInput();
+				} else if(command.equals("test")) {
+					this.runTest();
+				} else if(command.equals("dijkstra")) {
+					this.runDijkstra();
+				} else if(command.equals("join")) {
+					this.runJoin();
+				} else if(command.equals("left")) {
+					this.runLeft();
+				} else if(command.equals("exit")) {
+					break;
+				} else {
+					System.out.println("\u001B[34m" + "Unknown Command!" + "\u001B[0m");
+				}
+			} catch(Exception exp) {
+				System.out.println("\u001B[31m" + "Something Went Wrong!" + "\u001B[0m");
 			}
 		}
 	}
