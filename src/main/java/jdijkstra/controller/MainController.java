@@ -27,6 +27,10 @@ public class MainController {
 				this.runTest();
 			} else if(command.equals("dijkstra")) {
 				this.runDijkstra();
+			} else if(command.equals("join")) {
+				this.runJoin();
+			} else if(command.equals("left")) {
+				this.runLeft();
 			} else if(command.equals("exit")) {
 				break;
 			} else {
@@ -67,6 +71,44 @@ public class MainController {
 				System.out.print(targetNode.getId() + ", " + map.get(targetNode) + "\t");
 			}
 			System.out.println();
+		}
+	}
+	public void runJoin() {
+		int id = Integer.parseInt(scanner.nextLine());
+		graph.joinGuest(id);
+		List<Node> nodeList = graph.getNodeList();
+		Map<Node, Integer> fairScore = graph.getFairScore();
+		int minScore = Integer.MAX_VALUE;
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node currentNode = nodeList.getByIndex(it);
+			if (minScore >= fairScore.get(currentNode)) {
+				minScore = fairScore.get(currentNode);
+			}
+		}
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node currentNode = nodeList.getByIndex(it);
+			if (minScore == fairScore.get(currentNode)) {
+				System.out.println(currentNode.getId() + ": " + fairScore.get(currentNode));
+			}
+		}
+	}
+	public void runLeft() {
+		int id = Integer.parseInt(scanner.nextLine());
+		graph.leftGuest(id);
+		List<Node> nodeList = graph.getNodeList();
+		Map<Node, Integer> fairScore = graph.getFairScore();
+		int minScore = Integer.MAX_VALUE;
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node currentNode = nodeList.getByIndex(it);
+			if (minScore >= fairScore.get(currentNode)) {
+				minScore = fairScore.get(currentNode);
+			}
+		}
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node currentNode = nodeList.getByIndex(it);
+			if (minScore == fairScore.get(currentNode)) {
+				System.out.println(currentNode.getId() + ": " + fairScore.get(currentNode));
+			}
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 package jdijkstra.model.elements.graph;
 
+import java.lang.Math;
 import java.util.PriorityQueue;
 
 import jdijkstra.model.elements.*;
@@ -13,11 +14,15 @@ public class Graph {
 	private int nodeCount;
 	private int edgeCount;
 	private Map<Integer, Node> nodeMap;
+	private Map<Node, Boolean> guestMap;
+	private Map<Node, Integer> fairScore;
 	// Constructor
 	public Graph() {
 		this.nodeCount = 0;
 		this.edgeCount = 0;
 		this.nodeMap = new Map<Integer, Node>();
+		this.guestMap = new Map<Node, Boolean>();
+		this.fairScore = new Map<Node, Integer>();
 	}
 	// Getters
 	public int getNodeCount() {
@@ -25,6 +30,9 @@ public class Graph {
 	}
 	public int getEdgeCount() {
 		return this.edgeCount;
+	}
+	public Map<Node, Integer> getFairScore() {
+		return this.fairScore;
 	}
 	// Methods
 	private Node findStartNode() {
@@ -37,6 +45,8 @@ public class Graph {
 	public void newNode(int id) {
 		Node newNode = new Node(id);
 		this.nodeMap.put(id, newNode);
+		this.guestMap.put(newNode, false);
+		this.fairScore.put(newNode, 0);
 		this.nodeCount += 1;
 	}
 	public void newEdge(int from, int to, int weight) {
@@ -45,6 +55,50 @@ public class Graph {
 		fromNode.addAdjNode(toNode, weight);
 		toNode.addAdjNode(fromNode, weight);
 		this.edgeCount += 1;
+	}
+	public void joinGuest(int id) {
+		// recalc fair score for each node when someone joins in O(n)
+		Node guestNode = nodeMap.get(id);
+		if (this.guestMap.get(guestNode) == true) {
+			return;
+		}
+		this.guestMap.put(guestNode, true);
+		Map<Node, Integer> distMap = guestNode.getDistMap();
+		List<Node> nodeList = getNodeList();
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node cafe = nodeList.getByIndex(it);
+			int score = fairScore.get(cafe);
+			for (int jt = 0; jt < nodeList.getSize(); jt += 1) {
+				Node currentNode = nodeList.getByIndex(jt);
+				if (guestMap.get(currentNode) == false || guestNode.equals(currentNode)) {
+					continue;
+				}
+				score += Math.abs(guestNode.getDistMap().get(cafe) - currentNode.getDistMap().get(cafe));
+			}
+			this.fairScore.put(cafe, score);
+		}
+	}
+	public void leftGuest(int id) {
+		// recalc fair score for each node when someone leaves in O(n)
+		Node guestNode = nodeMap.get(id);
+		if (this.guestMap.get(guestNode) == false) {
+			return;
+		}
+		this.guestMap.put(guestNode, false);
+		Map<Node, Integer> distMap = guestNode.getDistMap();
+		List<Node> nodeList = getNodeList();
+		for (int it = 0; it < nodeList.getSize(); it += 1) {
+			Node cafe = nodeList.getByIndex(it);
+			int score = fairScore.get(cafe);
+			for (int jt = 0; jt < nodeList.getSize(); jt += 1) {
+				Node currentNode = nodeList.getByIndex(jt);
+				if (guestMap.get(currentNode) == false || guestNode.equals(currentNode)) {
+					continue;
+				}
+				score -= Math.abs(guestNode.getDistMap().get(cafe) - currentNode.getDistMap().get(cafe));
+			}
+			this.fairScore.put(cafe, score);
+		}
 	}
 	public List<Node> getNodeList() {
 		Node targetNode = findStartNode();
